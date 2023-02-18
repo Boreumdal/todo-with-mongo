@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #383838;
+    color: rgb(245, 245, 245);
+    min-height: 100vh;
+}
+
+.bg-overlay {
+    background-color: #00000073;
+}
