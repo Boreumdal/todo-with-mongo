@@ -11,3 +11,49 @@ body {
 .bg-overlay {
     background-color: #00000073;
 }
+
+.my-masonry-grid {
+    display: -webkit-box; /* Not needed if autoprefixing */
+    display: -ms-flexbox; /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -20px; /* gutter size offset */
+    width: auto;
+}
+.my-masonry-grid_column {
+    padding-left: 20px; /* gutter size */
+    background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+    margin-bottom: 20px;
+}
+
+.sticky-a {
+    background-color: #454445;
+    color: white;
+}
+.sticky-b {
+    background-color: #f8f8f9;
+    color: rgb(39, 39, 39);
+}
+.sticky-c {
+    background-color: #fef2aa;
+    color: rgb(39, 39, 39);
+}
+.sticky-d {
+    background-color: #ffcce5;
+    color: rgb(39, 39, 39);
+}
+.sticky-e {
+    background-color: #e7cefe;
+    color: rgb(39, 39, 39);
+}
+.sticky-f {
+    background-color: #cce8ff;
+    color: rgb(39, 39, 39);
+}
+.sticky-g {
+    background-color: #caf0c4;
+    color: rgb(39, 39, 39);
+}

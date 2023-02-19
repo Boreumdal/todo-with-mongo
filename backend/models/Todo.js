@@ -21,6 +21,10 @@ const TodoSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    bg: {
+        type: String,
+        required: true
+    },
     created_at: {
         type: Number,
         default: Date.now()

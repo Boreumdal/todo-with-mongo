@@ -55,6 +55,7 @@ router.post('/register', async (req, res) => {
     })
 })
 
+// USER: VERIFY TOKEN
 router.get('/user/:token', async (req, res) => {
     const { token } = req.params
 
@@ -62,6 +63,31 @@ router.get('/user/:token', async (req, res) => {
         if (err) throw err
         return res.json({ user: decoded._doc })
     })
+})
+
+// TODO: ADD TO DATABASE
+router.post('/todo/add', async (req, res) => {
+    const body = req.body
+
+    const todo = new Todo({
+        what: body.what,
+        when: body.when,
+        who: body.who,
+        bg: body.bg,
+        status: 'todo',
+        star: 1
+    })
+    todo.save()
+
+    return res.json({ msg: 'Todo added'})
+})
+
+// TODO: FETCHES ALL TODO TO BE DISPLAYED
+router.get('/todo/:id', async (req, res) => {
+    const { id } = req.params
+    const todos = await Todo.find({ who: id })
+
+    return res.json({ todos })
 })
 
 module.exports = router
