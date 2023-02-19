@@ -6,6 +6,7 @@ import Auth from './utilities/Auth'
 import Home from './pages/Home'
 import Lead from './pages/Lead'
 import Navbar from './components/Navbar'
+import Todo from './pages/Todo'
 
 const App = () => {
   const { user } = useData()
@@ -17,6 +18,7 @@ const App = () => {
           <Route index element={<Lead />} />
           <Route path='/login' element={<Login />} />
           <Route path='/home' element={<Auth><Home /></Auth>} />
+          <Route path='/todo' element={<Auth><Todo /></Auth>} />
         </Route>
       </Routes>
     </div>

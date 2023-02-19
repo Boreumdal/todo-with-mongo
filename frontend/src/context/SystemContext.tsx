@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 
 type ContextChildren = {
     children: React.ReactNode
@@ -19,6 +19,12 @@ interface UserInterface {
     email: string
 }
 
+interface NotifInterface {
+    msg: string,
+    err: string
+  }
+  
+
 const SysContext = createContext<any>(null)
 
 export const SystemContext = ({ children }: ContextChildren ) => {
@@ -27,7 +33,7 @@ export const SystemContext = ({ children }: ContextChildren ) => {
     const [token, setToken] = useState<string>('')
 
   return (
-    <SysContext.Provider value={{ todos, setTodos, user, setUser }}>{ children }</SysContext.Provider>
+    <SysContext.Provider value={{ todos, setTodos, user, setUser, token, setToken }}>{ children }</SysContext.Provider>
   )
 }
 

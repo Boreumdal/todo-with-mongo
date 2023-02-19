@@ -1,20 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useData } from '../context/SystemContext'
 import { useNavigate } from 'react-router-dom'
+import Login from '../pages/Login'
 
 type AuthChildren = {
     children: React.ReactNode
 }
 
 const Auth = ({ children }: AuthChildren) => {
-    const { user, token } = useData()
-    const navigate = useNavigate()
+    const { token } = useData()
 
-    // if (!user.id) {
-    //     navigate('/login')
-    // } else {
-        
-    // }
+    if (!token) {
+        return <Login />
+    }
 
     return (
         <>{ children }</>
