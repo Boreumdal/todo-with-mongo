@@ -3,7 +3,7 @@ import { useData } from '../context/SystemContext'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import { FiTrash, FiEdit2, FiSave, FiCheck } from 'react-icons/fi'
-import { BsBookmarkCheck } from 'react-icons/bs'
+import { BsHeart, BsHeartFill } from 'react-icons/bs'
 import Masonry from 'react-masonry-css'
 import { motion } from 'framer-motion'
 
@@ -60,7 +60,7 @@ const Todo = () => {
     const fetchesTodos = (id: string) => {
         axios.get(`http://localhost:7000/todo/${id}`)
             .then(response => {
-                setTodos(response.data.todos.reverse())
+                setTodos(response.data.todos.reverse().sort((a: TodoInterface, b: TodoInterface) => b.star - a.star))
             })
     }
 
@@ -116,12 +116,36 @@ const Todo = () => {
                 when: whenRef?.value ? whenRef?.value : 'None'
             })
             .then(response => {
-                successPop(response.data)
+                successPop(response.data.msg)
                 fetchesTodos(user._id)
             })
         } else {
             errorPop('You can\'t save blank todo')
         }
+    }
+
+    const handleInBookmark = (id: string) => {
+        axios.patch('http://localhost:7000/todo/mark', { id })
+            .then(response => {
+                successPop(response.data.msg)
+                fetchesTodos(user._id)
+            })
+    }
+
+    const handleOutBookmark = (id: string) => {
+        axios.patch('http://localhost:7000/todo/unmark', { id })
+            .then(response => {
+                successPop(response.data.msg)
+                fetchesTodos(user._id)
+            })
+    }
+
+    const handleDone = (id: string) => {
+        axios.patch('http://localhost:7000/todo/done', { id })
+            .then(response => {
+                successPop(response.data.msg)
+                fetchesTodos(user._id)
+            })
     }
 
     const breakpointCols = {
@@ -137,12 +161,13 @@ const Todo = () => {
         <div key={idx} className={`sticky-${todo?.bg} hover:scale-[1.01] cursor-pointer duration-200 sticky-container`}>
             <div className='bg-[#ffffff60] flex-row flex items-center justify-between p-1'>
                 <div className='flex flex-row items-center w-2/3'>
-                    <p className='text-sm w-fit p-1 hover:text-white hover:bg-green-500 duration-200 rounded-full'><BsBookmarkCheck /></p>
+                    <button onClick={() => todo?.status !== 'done' ? todo?.star === 1 ? handleInBookmark(todo._id) : handleOutBookmark(todo._id) : null} className='text-sm w-fit p-1 hover:text-pink-500 duration-200 rounded-full'>{ todo?.star === 1 ? <BsHeart /> : <span className='text-pink-500'><BsHeartFill /></span> }</button>
+                    
                     <div className='w-2/3'>
                         {
-                            todo?.status === 'todo'
-                            ? <p className='text-xs font-bold italic opacity-70 text-ellipsis overflow-x-hidden whitespace-nowrap'>ID: { todo?._id }</p>
-                            : <p className='text-xs font-bold italic opacity-80 text-ellipsis overflow-x-hidden whitespace-nowrap'>Editing</p>
+                            todo?.status === 'todo-edit'
+                            ? <p className='text-xs font-bold italic opacity-80 text-ellipsis overflow-x-hidden whitespace-nowrap'>Editing</p>
+                            : <p className='text-xs font-bold italic opacity-70 text-ellipsis overflow-x-hidden whitespace-nowrap'>ID: { todo?._id }</p>
                         }
                         
                     </div>
@@ -156,22 +181,20 @@ const Todo = () => {
             <div className='py-3 px-4'>
                 <div className='flex flex-row justify-between pb-1'>
                     {
-                        todo.status === 'todo'
-                        ? <p>{ todo?.what.charAt(0).toUpperCase() + todo?.what.slice(1) }</p>
-                        : <textarea defaultValue={todo?.what} ref={editingWhatRef} rows={4} className='outline-0 border bg-transparent'></textarea>
+                        todo.status === 'todo-edit'
+                        ? <textarea defaultValue={todo?.what} ref={editingWhatRef} rows={4} className='outline-0 border bg-transparent'></textarea>
+                        : <p>{ todo?.what.charAt(0).toUpperCase() + todo?.what.slice(1) }</p>
                     }
                 </div>
                 <div className='flex flex-row justify-between items-center gap-1 pt-2'>
-                    {
-                        todo.status === 'todo'
-                        ? <p className='font-bold text-xs opacity-60 '>{ todo?.when }</p>
-                        : <input type='date' defaultValue={todo?.when} ref={editingWhenRef} className='outline-0 border bg-transparent font-bold py-1 text-xs opacity-60' />
+                    { 
+                        todo?.status === 'todo-edit' 
+                        ? <input type='date' defaultValue={todo?.when} ref={editingWhenRef} className='outline-0 border bg-transparent font-bold py-1 text-xs opacity-60' /> 
+                        : <p className='font-bold text-xs opacity-60 '>{ todo?.when }</p>
                     }
-                    {
-                        todo?.status === 'todo' 
-                        ? <button onClick={() => handleEditSave(todo._id)} className='text-lg p-2 rounded-full text-white shadow bg-green-400 hover:bg-orange-500 duration-300 sticky-done'><FiCheck /></button>
-                        : <button onClick={() => handleEditSave(todo._id)} className='text-lg p-2 rounded-full text-white shadow bg-orange-400 hover:bg-orange-500 duration-200'><FiSave /></button>
-                    }
+                    
+                    { todo?.status === 'todo' && <button onClick={() => handleDone(todo._id)} className='text-lg p-2 rounded-full text-white shadow bg-green-400 hover:bg-orange-500 duration-300 sticky-done'><FiCheck /></button> }
+                    { todo?.status === 'todo-edit' && <button onClick={() => handleEditSave(todo._id)} className='text-lg p-2 rounded-full text-white shadow bg-orange-400 hover:bg-orange-500 duration-200'><FiSave /></button> }
                 </div>
             </div>
                 

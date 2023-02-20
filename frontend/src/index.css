@@ -57,6 +57,12 @@ body {
     background-color: #caf0c4;
     color: rgb(39, 39, 39);
 }
+.sticky-h {
+    background-color: #282828;
+    color: rgb(216, 216, 216);
+    opacity: .9;
+    cursor: not-allowed;
+}
 
 .sticky-done {
     opacity: 0;

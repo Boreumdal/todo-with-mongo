@@ -94,6 +94,24 @@ router.patch('/todo/toggle', async (req, res) => {
     res.json({ msg: `Editing ${req.body.id.substring(0, 10)}...` })
 })
 
+router.patch('/todo/mark', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.body.id, { star: 2 })
+    
+    res.json({ msg: `Bookmarked ${req.body.id.substring(0, 10)}...` })
+})
+
+router.patch('/todo/unmark', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.body.id, { star: 1 })
+    
+    res.json({ msg: `Bookmark ${req.body.id.substring(0, 10)}... removed` })
+})
+
+router.patch('/todo/done', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.body.id, { status: 'done', bg: 'h' })
+    
+    res.json({ msg: `Todo ${req.body.id.substring(0, 10)}... marked as done` })
+})
+
 router.patch('/todo', async (req, res) => {
     await Todo.findByIdAndUpdate(req.body.id, { what: req.body.what, when: req.body.when, status: 'todo' })
 
