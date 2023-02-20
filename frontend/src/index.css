@@ -30,8 +30,8 @@ body {
 }
 
 .sticky-a {
-    background-color: #454445;
-    color: white;
+    background-color: #ede2cf;
+    color: rgb(39, 39, 39);
 }
 .sticky-b {
     background-color: #f8f8f9;
@@ -56,4 +56,12 @@ body {
 .sticky-g {
     background-color: #caf0c4;
     color: rgb(39, 39, 39);
+}
+
+.sticky-done {
+    opacity: 0;
+}
+
+.sticky-container:hover .sticky-done {
+    opacity: 1;
 }

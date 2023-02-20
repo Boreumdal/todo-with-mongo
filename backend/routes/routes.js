@@ -66,7 +66,7 @@ router.get('/user/:token', async (req, res) => {
 })
 
 // TODO: ADD TO DATABASE
-router.post('/todo/add', async (req, res) => {
+router.post('/todo', async (req, res) => {
     const body = req.body
 
     const todo = new Todo({
@@ -80,6 +80,24 @@ router.post('/todo/add', async (req, res) => {
     todo.save()
 
     return res.json({ msg: 'Todo added'})
+})
+
+router.delete('/todo', async (req, res) => {
+    await Todo.findByIdAndDelete(req.body.id)
+
+    res.json({ msg: 'Deleted' })
+})
+
+router.patch('/todo/toggle', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.body.id, { status: 'todo-edit' })
+
+    res.json({ msg: `Editing ${req.body.id.substring(0, 10)}...` })
+})
+
+router.patch('/todo', async (req, res) => {
+    await Todo.findByIdAndUpdate(req.body.id, { what: req.body.what, when: req.body.when, status: 'todo' })
+
+    res.json({ msg: `Todo ${req.body.id.substring(0, 10)}... saved` })
 })
 
 // TODO: FETCHES ALL TODO TO BE DISPLAYED
